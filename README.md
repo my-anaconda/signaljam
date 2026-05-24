@@ -25,6 +25,7 @@ bun install     # or: npm install
 # start the Metro dev server
 npx expo start
 ```
+Please ensure that you are on the same Wi-Fi network as the device running the simulation.
 
 Then either scan the QR with **Expo Go** (SDK 54-compatible build), or press `i` / `a` for a simulator.
 
