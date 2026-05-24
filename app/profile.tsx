@@ -8,7 +8,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useNavigation } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
@@ -25,9 +25,12 @@ const BIO_SEX_OPTIONS: { label: string; value: BiologicalSex }[] = [
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const setProfile = useAppStore((s) => s.setProfile);
   const updateSettings = useAppStore((s) => s.updateSettings);
+
+  const canGoBack = navigation.canGoBack();
 
   const [ageRange, setAgeRange] = useState<AgeRange | null>(null);
   const [biologicalSex, setBiologicalSex] = useState<BiologicalSex | null>(null);
@@ -70,17 +73,19 @@ export default function ProfileScreen() {
       contentInsetAdjustmentBehavior="automatic"
       keyboardShouldPersistTaps="handled"
     >
-      {/* Back Button */}
-      <Pressable
-        onPress={() => router.back()}
-        style={styles.backButton}
-        accessibilityRole="button"
-        accessibilityLabel="Go back"
-        hitSlop={12}
-      >
-        <Ionicons name="chevron-back" size={22} color={Colors.textPrimary} />
-        <Text style={styles.backButtonText}>Back</Text>
-      </Pressable>
+      {/* Back Button — only shown when there's a screen to go back to */}
+      {canGoBack && (
+        <Pressable
+          onPress={() => router.back()}
+          style={styles.backButton}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          hitSlop={12}
+        >
+          <Ionicons name="chevron-back" size={22} color={Colors.textPrimary} />
+          <Text style={styles.backButtonText}>Back</Text>
+        </Pressable>
+      )}
 
       <Text style={styles.title}>Set Up Your Profile</Text>
 
