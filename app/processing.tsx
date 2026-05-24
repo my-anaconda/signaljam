@@ -13,15 +13,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
+import { useT } from '@/hooks/useT';
 
-const STEPS = [
-  'Extracting vocal features',
-  'Comparing to your baseline',
-  'Generating your NeuroScore',
-];
+const STEP_KEYS = [
+  'processing.step1',
+  'processing.step2',
+  'processing.step3',
+] as const;
 
 export default function ProcessingScreen() {
   const router = useRouter();
+  const t = useT();
   const [completedSteps, setCompletedSteps] = useState(0);
 
   // Pulse animation for brain icon
@@ -106,19 +108,17 @@ export default function ProcessingScreen() {
       </Animated.View>
 
       {/* Title */}
-      <Text style={styles.title}>Analyzing your signals...</Text>
+      <Text style={styles.title}>{t('processing.title')}</Text>
 
       {/* Micro-copy */}
-      <Text style={styles.subtitle}>
-        Hold tight — we&apos;re crunching the numbers
-      </Text>
+      <Text style={styles.subtitle}>{t('processing.subtitle')}</Text>
 
       {/* Progress Steps */}
       <View style={styles.stepsContainer}>
-        {STEPS.map((step, index) => {
+        {STEP_KEYS.map((stepKey, index) => {
           const isCompleted = completedSteps > index;
           return (
-            <View key={step} style={styles.stepRow}>
+            <View key={stepKey} style={styles.stepRow}>
               {isCompleted ? (
                 <Ionicons
                   name="checkmark-circle"
@@ -136,7 +136,7 @@ export default function ProcessingScreen() {
                   },
                 ]}
               >
-                {step}
+                {t(stepKey)}
               </Text>
             </View>
           );

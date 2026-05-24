@@ -15,27 +15,16 @@ import { Ionicons } from "@expo/vector-icons";
 import Svg, { Circle, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
 import { Fonts } from "@/constants/Typography";
+import { getLanguageOption } from "@/constants/Languages";
+import { LanguagePickerModal } from "@/components/language-picker-modal";
 import { useAppStore } from "@/store/useAppStore";
+import { useT } from "@/hooks/useT";
 
-const SLIDES = [
-  {
-    number: 1,
-    title: "What is SignalJam?",
-    description:
-      "A non-intimidating wellness tool to track your vocal, speech, and motor signals.",
-  },
-  {
-    number: 2,
-    title: "How it works",
-    description: "Complete 3 simple tasks in minutes.",
-  },
-  {
-    number: 3,
-    title: "Your privacy",
-    description:
-      "Audio is processed locally and never stored without permission.",
-  },
-];
+const SLIDE_KEYS = [
+  { number: 1, titleKey: 'onboarding.slide1.title', descKey: 'onboarding.slide1.desc' },
+  { number: 2, titleKey: 'onboarding.slide2.title', descKey: 'onboarding.slide2.desc' },
+  { number: 3, titleKey: 'onboarding.slide3.title', descKey: 'onboarding.slide3.desc' },
+] as const;
 
 function SignalJamLogo() {
   return (
@@ -80,8 +69,18 @@ export default function OnboardingScreen() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const updateSettings = useAppStore((s) => s.updateSettings);
+  const language = useAppStore((s) => s.settings.language);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [showLanguagePicker, setShowLanguagePicker] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
+  const t = useT();
+
+  const currentLanguage = getLanguageOption(language);
+  const slides = SLIDE_KEYS.map((s) => ({
+    number: s.number,
+    title: t(s.titleKey),
+    description: t(s.descKey),
+  }));
 
   const slideWidth = width - 64; // horizontal padding 32 each side
 
@@ -110,9 +109,7 @@ export default function OnboardingScreen() {
       <View style={styles.logoContainer}>
         <SignalJamLogo />
         <Text style={styles.appName}>SignalJam</Text>
-        <Text style={styles.tagline}>
-          Your voice, your baseline. Track what matters.
-        </Text>
+        <Text style={styles.tagline}>{t('onboarding.tagline')}</Text>
       </View>
 
       {/* Slides */}
@@ -129,7 +126,7 @@ export default function OnboardingScreen() {
           snapToInterval={slideWidth}
           decelerationRate="fast"
         >
-          {SLIDES.map((slide) => (
+          {slides.map((slide) => (
             <View
               key={slide.number}
               style={[styles.slideCard, { width: slideWidth }]}
@@ -145,7 +142,7 @@ export default function OnboardingScreen() {
 
         {/* Dot indicators */}
         <View style={styles.dotsContainer}>
-          {SLIDES.map((_, index) => (
+          {slides.map((_, index) => (
             <View
               key={index}
               style={[
@@ -159,9 +156,14 @@ export default function OnboardingScreen() {
 
       {/* Language selector */}
       <View style={styles.languageContainer}>
-        <Pressable style={styles.languageButton}>
+        <Pressable
+          style={styles.languageButton}
+          onPress={() => setShowLanguagePicker(true)}
+          accessibilityRole="button"
+          accessibilityLabel={`Change language. Current: ${currentLanguage.english}`}
+        >
           <Ionicons name="globe-outline" size={18} color={Colors.textSecondary} />
-          <Text style={styles.languageText}>English</Text>
+          <Text style={styles.languageText}>{currentLanguage.label}</Text>
           <Ionicons
             name="chevron-down"
             size={14}
@@ -169,6 +171,13 @@ export default function OnboardingScreen() {
           />
         </Pressable>
       </View>
+
+      <LanguagePickerModal
+        visible={showLanguagePicker}
+        selected={language}
+        onSelect={(code) => updateSettings({ language: code })}
+        onClose={() => setShowLanguagePicker(false)}
+      />
 
       {/* Get Started button */}
       <Pressable
@@ -178,13 +187,11 @@ export default function OnboardingScreen() {
         ]}
         onPress={handleGetStarted}
       >
-        <Text style={styles.ctaButtonText}>Get Started</Text>
+        <Text style={styles.ctaButtonText}>{t('onboarding.getStarted')}</Text>
       </Pressable>
 
       {/* Disclaimer */}
-      <Text style={styles.disclaimer}>
-        SignalJam is a screening tool, not a diagnostic device.
-      </Text>
+      <Text style={styles.disclaimer}>{t('onboarding.disclaimer')}</Text>
     </ScrollView>
   );
 }

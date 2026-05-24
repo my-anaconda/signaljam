@@ -8,7 +8,7 @@ interface TaskCardProps {
   title: string;
   description: string;
   duration: string;
-  onStart: () => void;
+  onStart?: () => void;
   stepNumber: number;
 }
 
@@ -37,17 +37,19 @@ export function TaskCard({
         <Text style={styles.duration}>{duration}</Text>
       </View>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.startButton,
-          pressed && styles.startButtonPressed,
-        ]}
-        onPress={onStart}
-        accessibilityRole="button"
-        accessibilityLabel={`Start ${title}`}
-      >
-        <Text style={styles.startButtonText}>Start</Text>
-      </Pressable>
+      {onStart && (
+        <Pressable
+          style={({ pressed }) => [
+            styles.startButton,
+            pressed && styles.startButtonPressed,
+          ]}
+          onPress={onStart}
+          accessibilityRole="button"
+          accessibilityLabel={`Start ${title}`}
+        >
+          <Text style={styles.startButtonText}>Start</Text>
+        </Pressable>
+      )}
     </View>
   );
 }

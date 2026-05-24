@@ -14,28 +14,8 @@ import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import { Sparkline } from '@/components/sparkline';
 import { GlassCard } from '@/components/glass-card';
+import { useT } from '@/hooks/useT';
 import type { ScoreLabel } from '@/store/types';
-
-interface DemoSession {
-  id: string;
-  date: string;
-  neuroScore: number;
-  scoreLabel: ScoreLabel;
-  vocalStabilityScore: number;
-  speechRhythmScore: number;
-  motorCoordinationScore: number;
-  baselineDrift: number;
-}
-
-const demoSessions: DemoSession[] = [
-  { id: '1', date: '2026-05-24', neuroScore: 94, scoreLabel: 'Stable', vocalStabilityScore: 88, speechRhythmScore: 92, motorCoordinationScore: 95, baselineDrift: 2 },
-  { id: '2', date: '2026-05-22', neuroScore: 91, scoreLabel: 'Stable', vocalStabilityScore: 86, speechRhythmScore: 90, motorCoordinationScore: 93, baselineDrift: 1 },
-  { id: '3', date: '2026-05-20', neuroScore: 89, scoreLabel: 'Stable', vocalStabilityScore: 84, speechRhythmScore: 88, motorCoordinationScore: 91, baselineDrift: -1 },
-  { id: '4', date: '2026-05-18', neuroScore: 92, scoreLabel: 'Stable', vocalStabilityScore: 87, speechRhythmScore: 91, motorCoordinationScore: 94, baselineDrift: 3 },
-  { id: '5', date: '2026-05-16', neuroScore: 87, scoreLabel: 'Stable', vocalStabilityScore: 82, speechRhythmScore: 86, motorCoordinationScore: 89, baselineDrift: -2 },
-  { id: '6', date: '2026-05-14', neuroScore: 90, scoreLabel: 'Stable', vocalStabilityScore: 85, speechRhythmScore: 89, motorCoordinationScore: 92, baselineDrift: 0 },
-  { id: '7', date: '2026-05-12', neuroScore: 85, scoreLabel: 'Stable', vocalStabilityScore: 80, speechRhythmScore: 84, motorCoordinationScore: 87, baselineDrift: -1 },
-];
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -59,25 +39,19 @@ function getScoreColor(label: ScoreLabel): string {
   }
 }
 
+const SCORE_LABEL_KEYS: Record<ScoreLabel, 'score.stable' | 'score.watchTrack' | 'score.checkIn'> = {
+  Stable: 'score.stable',
+  'Watch & Track': 'score.watchTrack',
+  'Check In': 'score.checkIn',
+};
+
 export default function HistoryScreen() {
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const sessions = useAppStore((s) => s.sessions);
+  const t = useT();
 
-  const displaySessions: DemoSession[] =
-    sessions.length > 0
-      ? sessions.map((s) => ({
-          id: s.id,
-          date: s.date,
-          neuroScore: s.neuroScore,
-          scoreLabel: s.scoreLabel,
-          vocalStabilityScore: s.vocalStabilityScore,
-          speechRhythmScore: s.speechRhythmScore,
-          motorCoordinationScore: s.motorCoordinationScore,
-          baselineDrift: s.baselineDrift,
-        }))
-      : demoSessions;
-
+  const displaySessions = sessions;
   const hasData = displaySessions.length > 0;
   const cardPadding = 20;
   const horizontalPadding = 20;
@@ -95,10 +69,8 @@ export default function HistoryScreen() {
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.emptyState}>
           <Ionicons name="time-outline" size={64} color={Colors.textMuted} />
-          <Text style={styles.emptyTitle}>No sessions yet</Text>
-          <Text style={styles.emptyMessage}>
-            Complete your first screening to see trends here.
-          </Text>
+          <Text style={styles.emptyTitle}>{t('history.empty.title')}</Text>
+          <Text style={styles.emptyMessage}>{t('history.empty.body')}</Text>
         </View>
       </View>
     );
@@ -111,11 +83,11 @@ export default function HistoryScreen() {
       showsVerticalScrollIndicator={false}
     >
       {/* Title */}
-      <Text style={styles.title}>History & Trends</Text>
+      <Text style={styles.title}>{t('history.title')}</Text>
 
       {/* Main Trend Chart */}
       <GlassCard style={styles.chartCard}>
-        <Text style={styles.chartTitle}>NeuroScore Over Time</Text>
+        <Text style={styles.chartTitle}>{t('history.chartTitle')}</Text>
         <View style={styles.sparklineWrapper}>
           <Sparkline
             data={neuroScores}
@@ -129,7 +101,7 @@ export default function HistoryScreen() {
       {/* Mini Trends */}
       <View style={styles.miniTrendsRow}>
         <View style={styles.miniTrendItem}>
-          <Text style={styles.miniTrendLabel}>Vocal</Text>
+          <Text style={styles.miniTrendLabel}>{t('history.miniVocal')}</Text>
           <Sparkline
             data={vocalScores}
             width={miniSparklineWidth > 0 ? miniSparklineWidth : 80}
@@ -138,7 +110,7 @@ export default function HistoryScreen() {
           />
         </View>
         <View style={styles.miniTrendItem}>
-          <Text style={styles.miniTrendLabel}>Speech</Text>
+          <Text style={styles.miniTrendLabel}>{t('history.miniSpeech')}</Text>
           <Sparkline
             data={speechScores}
             width={miniSparklineWidth > 0 ? miniSparklineWidth : 80}
@@ -147,7 +119,7 @@ export default function HistoryScreen() {
           />
         </View>
         <View style={styles.miniTrendItem}>
-          <Text style={styles.miniTrendLabel}>Motor</Text>
+          <Text style={styles.miniTrendLabel}>{t('history.miniMotor')}</Text>
           <Sparkline
             data={motorScores}
             width={miniSparklineWidth > 0 ? miniSparklineWidth : 80}
@@ -158,7 +130,7 @@ export default function HistoryScreen() {
       </View>
 
       {/* Session List */}
-      <Text style={styles.sectionTitle}>Sessions</Text>
+      <Text style={styles.sectionTitle}>{t('history.sessions')}</Text>
       {displaySessions.map((session) => (
         <Pressable key={session.id} style={({ pressed }) => [
           styles.sessionCard,
@@ -178,7 +150,7 @@ export default function HistoryScreen() {
               <Text style={styles.sessionScore}>{session.neuroScore}</Text>
             </View>
             <Text style={[styles.sessionLabel, { color: getScoreColor(session.scoreLabel) }]}>
-              {session.scoreLabel}
+              {t(SCORE_LABEL_KEYS[session.scoreLabel] ?? 'score.stable')}
             </Text>
           </View>
         </Pressable>

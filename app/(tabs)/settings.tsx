@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ScrollView, View, Text, Pressable, Switch, Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAppStore } from '@/store/useAppStore';
@@ -5,6 +6,10 @@ import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { getLanguageOption } from '@/constants/Languages';
+import { LanguagePickerModal } from '@/components/language-picker-modal';
+import { useT } from '@/hooks/useT';
+import { shareHistory } from '@/lib/shareHistory';
 
 function SectionHeader({ title }: { title: string }) {
   return <Text style={styles.sectionHeader}>{title}</Text>;
@@ -67,19 +72,33 @@ export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { settings, updateSettings, reset } = useAppStore();
+  const sessions = useAppStore((s) => s.sessions);
+  const profile = useAppStore((s) => s.profile);
+  const [showLanguagePicker, setShowLanguagePicker] = useState(false);
+  const currentLanguage = getLanguageOption(settings.language);
+  const t = useT();
+
+  const handleExportData = async () => {
+    try {
+      await shareHistory({ sessions, profile });
+    } catch (err) {
+      Alert.alert('Export failed', err instanceof Error ? err.message : String(err));
+    }
+  };
 
   const handleDeleteData = () => {
     Alert.alert(
-      'Delete All My Data',
-      'Are you sure you want to delete all your data? This action cannot be undone.',
+      t('settings.deleteAlert.title'),
+      t('settings.deleteAlert.body'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('common.delete'),
           style: 'destructive',
           onPress: () => {
             reset();
-            router.replace('/');
+            router.dismissAll?.();
+            router.replace('/(onboarding)');
           },
         },
       ]
@@ -87,7 +106,7 @@ export default function SettingsScreen() {
   };
 
   const handleComingSoon = () => {
-    Alert.alert('Coming Soon', 'Feature coming soon');
+    Alert.alert(t('common.comingSoon'), t('common.comingSoonFeature'));
   };
 
   return (
@@ -96,60 +115,67 @@ export default function SettingsScreen() {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.title}>{t('settings.title')}</Text>
 
       {/* Preferences */}
-      <SectionHeader title="Preferences" />
+      <SectionHeader title={t('settings.section.preferences')} />
       <NavigationRow
-        label="Language"
-        value="English"
-        onPress={handleComingSoon}
+        label={t('settings.language')}
+        value={currentLanguage.label}
+        onPress={() => setShowLanguagePicker(true)}
       />
       <ToggleRow
-        label="Notification Reminders"
+        label={t('settings.reminders')}
         value={settings.remindersEnabled}
         onValueChange={(val) => updateSettings({ remindersEnabled: val })}
       />
       <ToggleRow
-        label="Caregiver Mode"
+        label={t('settings.caregiverMode')}
         value={settings.caregiverMode}
         onValueChange={(val) => updateSettings({ caregiverMode: val })}
       />
 
       {/* Data & Privacy */}
-      <SectionHeader title="Data & Privacy" />
+      <SectionHeader title={t('settings.section.dataPrivacy')} />
       <ToggleRow
-        label="Local Data Storage"
+        label={t('settings.storage')}
         value={settings.storageOptIn}
         onValueChange={(val) => updateSettings({ storageOptIn: val })}
-        description="Save results on your device"
+        description={t('settings.storageHint')}
       />
       <NavigationRow
-        label="Export Data"
-        onPress={handleComingSoon}
+        label={t('settings.exportData')}
+        onPress={handleExportData}
       />
       <NavigationRow
-        label="Delete All My Data"
+        label={t('settings.deleteData')}
         onPress={handleDeleteData}
         destructive
       />
 
       {/* About */}
-      <SectionHeader title="About" />
+      <SectionHeader title={t('settings.section.about')} />
       <NavigationRow
-        label="Privacy Policy"
+        label={t('settings.privacy')}
         onPress={handleComingSoon}
       />
       <NavigationRow
-        label="Terms of Service"
+        label={t('settings.terms')}
         onPress={handleComingSoon}
       />
       <NavigationRow
-        label="About SignalJam"
+        label={t('settings.about')}
         onPress={handleComingSoon}
       />
 
       <Text style={styles.version}>SignalJam v1.0.0</Text>
+
+      <LanguagePickerModal
+        visible={showLanguagePicker}
+        selected={settings.language}
+        onSelect={(code) => updateSettings({ language: code })}
+        onClose={() => setShowLanguagePicker(false)}
+      />
     </ScrollView>
   );
 }

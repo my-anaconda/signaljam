@@ -17,16 +17,17 @@ import { NeuroScoreRing } from '@/components/neuro-score-ring';
 import { Sparkline } from '@/components/sparkline';
 import { GlassCard } from '@/components/glass-card';
 import { PrimaryButton } from '@/components/primary-button';
+import { useT } from '@/hooks/useT';
 import type { ScoreLabel } from '@/store/types';
 
-function getGreeting(): string {
+function getGreetingKey(): 'home.greeting.morning' | 'home.greeting.afternoon' | 'home.greeting.evening' {
   const hour = new Date().getHours();
-  if (hour < 12) return 'Good morning';
-  if (hour < 18) return 'Good afternoon';
-  return 'Good evening';
+  if (hour < 12) return 'home.greeting.morning';
+  if (hour < 18) return 'home.greeting.afternoon';
+  return 'home.greeting.evening';
 }
 
-function formatLastRecorded(dateString: string): string {
+function formatLastRecorded(dateString: string, todayLabel: string, lastRecordedLabel: string): string {
   const date = new Date(dateString);
   const now = new Date();
   const isToday =
@@ -40,14 +41,14 @@ function formatLastRecorded(dateString: string): string {
   });
 
   if (isToday) {
-    return `Last recorded: Today, ${timeStr}`;
+    return `${lastRecordedLabel}: ${todayLabel}, ${timeStr}`;
   }
 
   const dateStr = date.toLocaleDateString([], {
     month: 'short',
     day: 'numeric',
   });
-  return `Last recorded: ${dateStr}, ${timeStr}`;
+  return `${lastRecordedLabel}: ${dateStr}, ${timeStr}`;
 }
 
 export default function HomeScreen() {
@@ -57,22 +58,22 @@ export default function HomeScreen() {
   const profile = useAppStore((s) => s.profile);
   const sessions = useAppStore((s) => s.sessions);
 
-  const nickname = profile?.nickname || 'there';
-  const greeting = `${getGreeting()}, ${nickname}`;
+  const t = useT();
+  const nickname = profile?.nickname || t('home.defaultNickname');
+  const greeting = `${t(getGreetingKey())}, ${nickname}`;
 
-  // Use latest session data or demo defaults
-  const latestSession = sessions.length > 0 ? sessions[0] : null;
-  const score = latestSession?.neuroScore ?? 94;
+  const hasSessions = sessions.length > 0;
+  const latestSession = hasSessions ? sessions[0] : null;
+  const score = latestSession?.neuroScore ?? 0;
   const scoreLabel: ScoreLabel = latestSession?.scoreLabel ?? 'Stable';
   const lastRecordedText = latestSession
-    ? formatLastRecorded(latestSession.date)
-    : 'Last recorded: Today, 9:15 AM';
+    ? formatLastRecorded(latestSession.date, t('common.today'), t('home.lastRecorded'))
+    : null;
 
-  // Last 7 session scores for sparkline
   const sparklineData =
     sessions.length >= 2
       ? sessions.slice(0, 7).map((s) => s.neuroScore).reverse()
-      : [85, 88, 90, 87, 92, 91, 94];
+      : null;
 
   const cardPadding = 20;
   const horizontalPadding = 20;
@@ -104,29 +105,41 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* NeuroScore Ring */}
-      <View style={styles.scoreSection}>
-        <NeuroScoreRing score={score} size={220} scoreLabel={scoreLabel} />
-        <Text style={styles.lastRecorded}>{lastRecordedText}</Text>
-      </View>
-
-      {/* Sparkline Card */}
-      <GlassCard style={styles.sparklineCard}>
-        <Text style={styles.sparklineTitle}>Last 7 Sessions</Text>
-        <View style={styles.sparklineWrapper}>
-          <Sparkline
-            data={sparklineData}
-            width={sparklineWidth > 0 ? sparklineWidth : 280}
-            height={60}
-            color={Colors.secondary}
-          />
+      {/* NeuroScore Ring or empty state */}
+      {hasSessions ? (
+        <View style={styles.scoreSection}>
+          <NeuroScoreRing score={score} size={220} scoreLabel={scoreLabel} />
+          {lastRecordedText && (
+            <Text style={styles.lastRecorded}>{lastRecordedText}</Text>
+          )}
         </View>
-      </GlassCard>
+      ) : (
+        <GlassCard style={styles.emptyCard}>
+          <Ionicons name="pulse-outline" size={36} color={Colors.secondary} />
+          <Text style={styles.emptyTitle}>{t('home.empty.title')}</Text>
+          <Text style={styles.emptyBody}>{t('home.empty.body')}</Text>
+        </GlassCard>
+      )}
+
+      {/* Sparkline Card — only after 2+ sessions */}
+      {sparklineData && (
+        <GlassCard style={styles.sparklineCard}>
+          <Text style={styles.sparklineTitle}>{t('home.lastSessions')}</Text>
+          <View style={styles.sparklineWrapper}>
+            <Sparkline
+              data={sparklineData}
+              width={sparklineWidth > 0 ? sparklineWidth : 280}
+              height={60}
+              color={Colors.secondary}
+            />
+          </View>
+        </GlassCard>
+      )}
 
       {/* Action Buttons */}
       <View style={styles.actions}>
         <PrimaryButton
-          title="New Screening"
+          title={t('home.newScreening')}
           onPress={() => router.push('/(tabs)/screening')}
           icon={
             <Ionicons name="mic-outline" size={20} color={Colors.textPrimary} />
@@ -135,14 +148,14 @@ export default function HomeScreen() {
         <View style={styles.secondaryButtons}>
           <View style={styles.halfButton}>
             <PrimaryButton
-              title="View History"
+              title={t('home.viewHistory')}
               variant="outline"
               onPress={() => router.push('/(tabs)/history')}
             />
           </View>
           <View style={styles.halfButton}>
             <PrimaryButton
-              title="Learn More"
+              title={t('home.learnMore')}
               variant="outline"
               onPress={() => router.push('/(tabs)/learn')}
             />
@@ -191,6 +204,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     gap: 14,
+  },
+  emptyCard: {
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 28,
+  },
+  emptyTitle: {
+    fontFamily: Fonts.semiBold,
+    fontSize: 17,
+    color: Colors.textPrimary,
+  },
+  emptyBody: {
+    fontFamily: Fonts.regular,
+    fontSize: 13,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    paddingHorizontal: 12,
+    lineHeight: 19,
   },
   lastRecorded: {
     fontFamily: Fonts.regular,

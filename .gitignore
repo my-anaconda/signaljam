@@ -26,6 +26,8 @@ bun-debug.*
 yarn-debug.*
 yarn-error.*
 .meta/
+*.log
+package-lock.json
 
 # macOS
 .DS_Store

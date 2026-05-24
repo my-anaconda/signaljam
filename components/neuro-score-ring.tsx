@@ -3,6 +3,8 @@ import { View, StyleSheet, Text } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
+import { useT } from '@/hooks/useT';
+import type { StringKey } from '@/constants/Translations';
 
 type ScoreLabel = 'Stable' | 'Watch & Track' | 'Check In';
 
@@ -11,6 +13,12 @@ interface NeuroScoreRingProps {
   size: number;
   scoreLabel: ScoreLabel;
 }
+
+const LABEL_KEYS: Record<ScoreLabel, StringKey> = {
+  Stable: 'score.stable',
+  'Watch & Track': 'score.watchTrack',
+  'Check In': 'score.checkIn',
+};
 
 const getLabelColor = (label: ScoreLabel): string => {
   switch (label) {
@@ -24,6 +32,8 @@ const getLabelColor = (label: ScoreLabel): string => {
 };
 
 export function NeuroScoreRing({ score, size, scoreLabel }: NeuroScoreRingProps) {
+  const t = useT();
+  const displayLabel = t(LABEL_KEYS[scoreLabel] ?? 'score.stable');
   const strokeWidth = size * 0.1;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -61,7 +71,7 @@ export function NeuroScoreRing({ score, size, scoreLabel }: NeuroScoreRingProps)
     <View
       style={[styles.container, { width: size, height: size }]}
       accessibilityRole="none"
-      accessibilityLabel={`Neuro score ${score} out of 100, status ${scoreLabel}`}
+      accessibilityLabel={`Neuro score ${score} out of 100, status ${displayLabel}`}
     >
       <Svg width={size} height={size}>
         {/* Background ring */}
@@ -103,7 +113,7 @@ export function NeuroScoreRing({ score, size, scoreLabel }: NeuroScoreRingProps)
             { fontSize: size * 0.1, color: ringColor },
           ]}
         >
-          {scoreLabel}
+          {displayLabel}
         </Text>
       </View>
     </View>

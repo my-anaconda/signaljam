@@ -14,20 +14,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import { useAppStore } from '@/store/useAppStore';
+import { useT } from '@/hooks/useT';
 import type { AgeRange, BiologicalSex, UserProfile } from '@/store/types';
 
 const AGE_RANGES: AgeRange[] = ['18-40', '41-60', '61-75', '75+'];
-const BIO_SEX_OPTIONS: { label: string; value: BiologicalSex }[] = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-];
+const BIO_SEX_KEYS = [
+  { key: 'profile.male', value: 'male' },
+  { key: 'profile.female', value: 'female' },
+  { key: 'profile.other', value: 'other' },
+] as const;
 
 export default function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const setProfile = useAppStore((s) => s.setProfile);
   const updateSettings = useAppStore((s) => s.updateSettings);
+  const language = useAppStore((s) => s.settings.language);
+  const t = useT();
 
   const [ageRange, setAgeRange] = useState<AgeRange | null>(null);
   const [biologicalSex, setBiologicalSex] = useState<BiologicalSex | null>(null);
@@ -44,7 +47,7 @@ export default function ProfileScreen() {
       ageRange,
       biologicalSex,
       caregiverMode,
-      language: 'en',
+      language,
       createdAt: new Date().toISOString(),
     };
 
@@ -75,18 +78,18 @@ export default function ProfileScreen() {
         onPress={() => router.replace('/(onboarding)')}
         style={styles.backButton}
         accessibilityRole="button"
-        accessibilityLabel="Go back to onboarding"
+        accessibilityLabel={t('common.back')}
         hitSlop={12}
       >
         <Ionicons name="chevron-back" size={22} color={Colors.textPrimary} />
-        <Text style={styles.backButtonText}>Back</Text>
+        <Text style={styles.backButtonText}>{t('common.back')}</Text>
       </Pressable>
 
-      <Text style={styles.title}>Set Up Your Profile</Text>
+      <Text style={styles.title}>{t('profile.title')}</Text>
 
       {/* Age Range */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>Age Range</Text>
+        <Text style={styles.sectionLabel}>{t('profile.ageRange')}</Text>
         <View style={styles.pillRow}>
           {AGE_RANGES.map((range) => (
             <Pressable
@@ -112,10 +115,10 @@ export default function ProfileScreen() {
 
       {/* Biological Sex */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>Biological Sex</Text>
-        <Text style={styles.sectionSubLabel}>(for cohort matching)</Text>
+        <Text style={styles.sectionLabel}>{t('profile.biologicalSex')}</Text>
+        <Text style={styles.sectionSubLabel}>{t('profile.cohortHint')}</Text>
         <View style={styles.pillRow}>
-          {BIO_SEX_OPTIONS.map((option) => (
+          {BIO_SEX_KEYS.map((option) => (
             <Pressable
               key={option.value}
               style={[
@@ -130,7 +133,7 @@ export default function ProfileScreen() {
                   biologicalSex === option.value && styles.pillTextActive,
                 ]}
               >
-                {option.label}
+                {t(option.key)}
               </Text>
             </Pressable>
           ))}
@@ -139,10 +142,10 @@ export default function ProfileScreen() {
 
       {/* Name/Nickname */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>Name / Nickname</Text>
+        <Text style={styles.sectionLabel}>{t('profile.nameLabel')}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter name (optional)"
+          placeholder={t('profile.namePlaceholder')}
           placeholderTextColor={Colors.textMuted}
           value={nickname}
           onChangeText={setNickname}
@@ -155,8 +158,8 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <View style={styles.toggleRow}>
           <View style={styles.toggleLabelContainer}>
-            <Text style={styles.sectionLabel}>Caregiver Mode</Text>
-            <Text style={styles.sectionSubLabel}>(monitoring someone else)</Text>
+            <Text style={styles.sectionLabel}>{t('profile.caregiverMode')}</Text>
+            <Text style={styles.sectionSubLabel}>{t('profile.caregiverHint')}</Text>
           </View>
           <Switch
             value={caregiverMode}
@@ -171,9 +174,9 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <View style={styles.toggleRow}>
           <View style={styles.toggleLabelContainer}>
-            <Text style={styles.sectionLabel}>Opt-in for Local Data Storage</Text>
+            <Text style={styles.sectionLabel}>{t('profile.storageOptIn')}</Text>
             <Text style={styles.toggleDescription}>
-              Securely save results on your device for trend tracking.
+              {t('profile.storageDescription')}
             </Text>
           </View>
           <Switch
@@ -191,7 +194,7 @@ export default function ProfileScreen() {
         onPress={handleSave}
         disabled={!isFormValid}
       >
-        <Text style={styles.buttonText}>Save & Continue</Text>
+        <Text style={styles.buttonText}>{t('profile.saveContinue')}</Text>
       </Pressable>
     </ScrollView>
   );

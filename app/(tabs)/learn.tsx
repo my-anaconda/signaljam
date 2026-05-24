@@ -14,56 +14,31 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import { GlassCard } from '@/components/glass-card';
+import { useT } from '@/hooks/useT';
+import type { StringKey } from '@/constants/Translations';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-interface LearnTopic {
+interface LearnTopicKeys {
   id: string;
   icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  preview: string;
-  content: string;
+  titleKey: StringKey;
+  previewKey: StringKey;
+  contentKey: StringKey;
 }
 
-const topics: LearnTopic[] = [
-  {
-    id: 'what-is-parkinsons',
-    icon: 'medical-outline',
-    title: "What is Parkinson's?",
-    preview: 'Brief overview of neurodegenerative diseases',
-    content:
-      "Parkinson's disease is a progressive nervous system disorder that affects movement. Early detection through signal analysis can help identify changes before clinical symptoms appear.",
-  },
-  {
-    id: 'scores-meaning',
-    icon: 'analytics-outline',
-    title: 'What do these scores mean?',
-    preview: 'Explanation of NeuroScore metrics',
-    content:
-      'Your NeuroScore is a composite of three measurements: vocal stability (pitch consistency), speech rhythm (fluency and timing), and motor coordination (finger tap regularity). Each is compared to your personal baseline.',
-  },
-  {
-    id: 'best-results',
-    icon: 'mic-outline',
-    title: 'How to get the most accurate reading',
-    preview: 'Tips for best results',
-    content:
-      'For best results: record in a quiet environment, hold your phone 6-8 inches from your mouth, try to relax and speak naturally, and test at the same time of day.',
-  },
-  {
-    id: 'faq',
-    icon: 'help-circle-outline',
-    title: 'Frequently Asked Questions',
-    preview: 'Common questions and answers',
-    content:
-      'Q: Is SignalJam a medical diagnosis?\nA: No. SignalJam is a screening and tracking tool. Always consult a healthcare professional for medical advice.\n\nQ: Is my data shared?\nA: No. All processing happens locally on your device. No audio is ever uploaded.',
-  },
+const TOPIC_KEYS: LearnTopicKeys[] = [
+  { id: 'what-is-parkinsons', icon: 'medical-outline',     titleKey: 'learn.parkinsons.title', previewKey: 'learn.parkinsons.preview', contentKey: 'learn.parkinsons.content' },
+  { id: 'scores-meaning',     icon: 'analytics-outline',   titleKey: 'learn.scores.title',     previewKey: 'learn.scores.preview',     contentKey: 'learn.scores.content' },
+  { id: 'best-results',       icon: 'mic-outline',         titleKey: 'learn.tips.title',       previewKey: 'learn.tips.preview',       contentKey: 'learn.tips.content' },
+  { id: 'faq',                icon: 'help-circle-outline', titleKey: 'learn.faq.title',        previewKey: 'learn.faq.preview',        contentKey: 'learn.faq.content' },
 ];
 
 export default function LearnScreen() {
   const insets = useSafeAreaInsets();
+  const t = useT();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const toggleExpand = useCallback((id: string) => {
@@ -86,10 +61,10 @@ export default function LearnScreen() {
       showsVerticalScrollIndicator={false}
     >
       {/* Title */}
-      <Text style={styles.title}>Learn</Text>
+      <Text style={styles.title}>{t('learn.title')}</Text>
 
       {/* Topic Cards */}
-      {topics.map((topic) => {
+      {TOPIC_KEYS.map((topic) => {
         const isExpanded = expandedIds.has(topic.id);
         return (
           <Pressable key={topic.id} onPress={() => toggleExpand(topic.id)}>
@@ -99,8 +74,8 @@ export default function LearnScreen() {
                   <Ionicons name={topic.icon} size={24} color={Colors.secondary} />
                 </View>
                 <View style={styles.topicTextContainer}>
-                  <Text style={styles.topicTitle}>{topic.title}</Text>
-                  <Text style={styles.topicPreview}>{topic.preview}</Text>
+                  <Text style={styles.topicTitle}>{t(topic.titleKey)}</Text>
+                  <Text style={styles.topicPreview}>{t(topic.previewKey)}</Text>
                 </View>
                 <Ionicons
                   name={isExpanded ? 'chevron-up' : 'chevron-down'}
@@ -111,7 +86,7 @@ export default function LearnScreen() {
               {isExpanded && (
                 <View style={styles.topicContent}>
                   <View style={styles.divider} />
-                  <Text style={styles.contentText}>{topic.content}</Text>
+                  <Text style={styles.contentText}>{t(topic.contentKey)}</Text>
                 </View>
               )}
             </GlassCard>
@@ -122,10 +97,7 @@ export default function LearnScreen() {
       {/* Disclaimer */}
       <View style={styles.disclaimerContainer}>
         <Ionicons name="information-circle-outline" size={16} color={Colors.textMuted} />
-        <Text style={styles.disclaimerText}>
-          SignalJam is a screening tool, not a diagnostic device. Always consult a healthcare
-          professional for medical concerns.
-        </Text>
+        <Text style={styles.disclaimerText}>{t('learn.disclaimer')}</Text>
       </View>
     </ScrollView>
   );

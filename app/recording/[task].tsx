@@ -1,46 +1,103 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useAudioPlayer } from 'expo-audio';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
+import { getLanguageOption } from '@/constants/Languages';
+import { pickRandomParagraph } from '@/constants/SpeechParagraphs';
 import { WaveformVisualizer } from '@/components/waveform-visualizer';
 import { PrimaryButton } from '@/components/primary-button';
+import { useAppStore } from '@/store/useAppStore';
+import { useT } from '@/hooks/useT';
+import type { StringKey } from '@/constants/Translations';
+
+const CLICK_SOUND = require('@/assets/sounds/click.wav');
+const TAP_BEAT_MS = 600; // 100 BPM
+
+const TASK_ORDER = ['vocal-tone', 'speech-rhythm', 'tap-test'] as const;
 
 const TASK_CONFIG: Record<
   string,
-  { title: string; duration: number; instruction: string }
+  { titleKey: StringKey; instructionKey: StringKey; duration: number }
 > = {
   'vocal-tone': {
-    title: 'Vocal Tone',
+    titleKey: 'task.vocalTone.title',
+    instructionKey: 'task.vocalTone.instruction',
     duration: 10,
-    instruction: "Sustain a steady vowel sound 'Aaah' for the duration.",
   },
   'speech-rhythm': {
-    title: 'Speech Rhythm',
-    duration: 60,
-    instruction: 'Read the passage aloud clearly at a comfortable pace.',
+    titleKey: 'task.speechRhythm.title',
+    instructionKey: 'task.speechRhythm.instruction',
+    duration: 30,
   },
   'tap-test': {
-    title: 'Tap Test',
+    titleKey: 'task.tapTest.title',
+    instructionKey: 'task.tapTest.instruction',
     duration: 30,
-    instruction: 'Tap the zone below steadily to the rhythm.',
   },
 };
 
+
 export default function RecordingScreen() {
   const router = useRouter();
-  const { task } = useLocalSearchParams<{ task: string }>();
+  const { task, step: stepParam, total: totalParam } = useLocalSearchParams<{
+    task: string;
+    step?: string;
+    total?: string;
+  }>();
   const insets = useSafeAreaInsets();
 
   const config = TASK_CONFIG[task ?? ''] ?? TASK_CONFIG['vocal-tone'];
   const isTapTest = task === 'tap-test';
+  const isSpeechRhythm = task === 'speech-rhythm';
+
+  const language = useAppStore((s) => s.settings.language);
+  const languageOption = getLanguageOption(language);
+  const t = useT();
+
+  const paragraph = useMemo(
+    () => (isSpeechRhythm ? pickRandomParagraph(language) : null),
+    [isSpeechRhythm, task, language]
+  );
+
+  const parsedStep = parseInt(stepParam ?? '', 10);
+  const parsedTotal = parseInt(totalParam ?? '', 10);
+  const total = Number.isFinite(parsedTotal) && parsedTotal > 0 ? parsedTotal : TASK_ORDER.length;
+  const step = Number.isFinite(parsedStep) && parsedStep > 0 ? parsedStep : 1;
+  const isLastStep = step >= total;
 
   const [isRecording, setIsRecording] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(config.duration);
   const [tapCount, setTapCount] = useState(0);
   const [hasRecorded, setHasRecorded] = useState(false);
+
+  const clickPlayer = useAudioPlayer(CLICK_SOUND);
+
+  useEffect(() => {
+    setIsRecording(false);
+    setHasRecorded(false);
+    setTimeRemaining(config.duration);
+    setTapCount(0);
+  }, [task, config.duration]);
+
+  useEffect(() => {
+    if (!isTapTest || !isRecording || !clickPlayer) return;
+
+    const tick = () => {
+      try {
+        clickPlayer.seekTo(0);
+        clickPlayer.play();
+      } catch {
+        // Audio not ready yet — ignore and the next tick will try again.
+      }
+    };
+    tick();
+    const interval = setInterval(tick, TAP_BEAT_MS);
+    return () => clearInterval(interval);
+  }, [isTapTest, isRecording, clickPlayer]);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -80,8 +137,15 @@ export default function RecordingScreen() {
   }, [config.duration]);
 
   const handleSubmit = useCallback(() => {
-    router.push('/processing');
-  }, [router]);
+    if (isLastStep) {
+      router.replace('/processing');
+      return;
+    }
+    const nextTask = TASK_ORDER[step] ?? TASK_ORDER[TASK_ORDER.length - 1];
+    router.replace(
+      `/recording/${nextTask}?step=${step + 1}&total=${total}`
+    );
+  }, [router, isLastStep, step, total]);
 
   const handleTap = useCallback(() => {
     if (isRecording) {
@@ -103,27 +167,38 @@ export default function RecordingScreen() {
           onPress={() => router.back()}
           style={styles.backButton}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
+          accessibilityLabel={t('common.back')}
           hitSlop={12}
         >
           <Ionicons name="chevron-back" size={24} color={Colors.textPrimary} />
         </Pressable>
-        <Text style={styles.headerTitle}>{config.title}</Text>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerTitle}>{t(config.titleKey)}</Text>
+          {total > 1 && (
+            <Text style={styles.headerSubtitle}>
+              {t('recording.stepOf', { step, total })}
+            </Text>
+          )}
+        </View>
         <View style={styles.backButton} />
       </View>
 
       {/* Instruction */}
-      <Text style={styles.instruction}>{config.instruction}</Text>
+      <Text style={styles.instruction}>{t(config.instructionKey)}</Text>
 
       {/* Timer */}
       <View style={styles.timerContainer}>
         <Text style={styles.timerText}>{formatTime(timeRemaining)}</Text>
         <Text style={styles.timerLabel}>
-          {isRecording ? 'Recording...' : hasRecorded ? 'Complete' : 'Ready'}
+          {isRecording
+            ? t('recording.status.recording')
+            : hasRecorded
+              ? t('recording.status.complete')
+              : t('recording.status.ready')}
         </Text>
       </View>
 
-      {/* Visualizer or Tap Zone */}
+      {/* Visualizer, Tap Zone, or Reading Passage */}
       <View style={styles.visualizerContainer}>
         {isTapTest ? (
           <Pressable
@@ -139,8 +214,23 @@ export default function RecordingScreen() {
           >
             <Text style={styles.tapEmoji}>👆</Text>
             <Text style={styles.tapCountText}>{tapCount}</Text>
-            <Text style={styles.tapLabel}>taps</Text>
+            <Text style={styles.tapLabel}>{t('recording.tapsLabel')}</Text>
           </Pressable>
+        ) : isSpeechRhythm && paragraph ? (
+          <ScrollView
+            style={styles.paragraphScroll}
+            contentContainerStyle={styles.paragraphContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text
+              style={[
+                styles.paragraphText,
+                languageOption.rtl && styles.paragraphRtl,
+              ]}
+            >
+              {paragraph}
+            </Text>
+          </ScrollView>
         ) : (
           <WaveformVisualizer
             isActive={isRecording}
@@ -160,7 +250,7 @@ export default function RecordingScreen() {
           ]}
           onPress={handleRecordToggle}
           accessibilityRole="button"
-          accessibilityLabel={isRecording ? 'Stop recording' : 'Start recording'}
+          accessibilityLabel={isRecording ? t('recording.tapToStop') : t('recording.tapToRecord')}
         >
           {isRecording ? (
             <View style={styles.stopIcon} />
@@ -169,27 +259,29 @@ export default function RecordingScreen() {
           )}
         </Pressable>
         <Text style={styles.recordHint}>
-          {isRecording ? 'Tap to stop' : 'Tap to record'}
+          {isRecording ? t('recording.tapToStop') : t('recording.tapToRecord')}
         </Text>
       </View>
 
       {/* Privacy Note */}
-      <Text style={styles.privacyNote}>
-        Your audio is processed locally and never stored without your permission
-      </Text>
+      <Text style={styles.privacyNote}>{t('recording.privacyNote')}</Text>
 
       {/* Action Buttons */}
       {hasRecorded && (
         <View style={styles.actionButtons}>
           <View style={styles.buttonWrapper}>
             <PrimaryButton
-              title="Re-record"
+              title={t('recording.reRecord')}
               onPress={handleReRecord}
               variant="outline"
             />
           </View>
           <View style={styles.buttonWrapper}>
-            <PrimaryButton title="Submit" onPress={handleSubmit} variant="filled" />
+            <PrimaryButton
+              title={isLastStep ? t('recording.submit') : t('recording.nextTask')}
+              onPress={handleSubmit}
+              variant="filled"
+            />
           </View>
         </View>
       )}
@@ -218,10 +310,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerTitleContainer: {
+    alignItems: 'center',
+    flex: 1,
+  },
   headerTitle: {
     fontFamily: Fonts.semiBold,
     fontSize: 18,
     color: Colors.textPrimary,
+  },
+  headerSubtitle: {
+    fontFamily: Fonts.medium,
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginTop: 2,
   },
   instruction: {
     fontFamily: Fonts.regular,
@@ -252,6 +354,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 120,
+  },
+  paragraphScroll: {
+    alignSelf: 'stretch',
+    maxHeight: 260,
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  paragraphContent: {
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+  },
+  paragraphText: {
+    fontFamily: Fonts.regular,
+    fontSize: 17,
+    lineHeight: 26,
+    color: Colors.textPrimary,
+    textAlign: 'left',
+  },
+  paragraphRtl: {
+    writingDirection: 'rtl',
+    textAlign: 'right',
   },
   tapZone: {
     width: 200,

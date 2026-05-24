@@ -20,6 +20,8 @@ import { Fonts } from '@/constants/Typography';
 import { NeuroScoreRing } from '@/components/neuro-score-ring';
 import { MetricCard } from '@/components/metric-card';
 import { useAppStore } from '@/store/useAppStore';
+import { useT } from '@/hooks/useT';
+import { shareHistory } from '@/lib/shareHistory';
 import type { Session, ScoreLabel } from '@/store/types';
 
 function generateRandomScore(min: number, max: number): number {
@@ -31,6 +33,8 @@ export default function ResultsScreen() {
   const insets = useSafeAreaInsets();
   const addSession = useAppStore((s) => s.addSession);
   const profile = useAppStore((s) => s.profile);
+  const sessions = useAppStore((s) => s.sessions);
+  const t = useT();
 
   const [saveResults, setSaveResults] = useState(true);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -54,13 +58,6 @@ export default function ResultsScreen() {
 
   const scoreLabel: ScoreLabel = scores.neuroScore >= 80 ? 'Stable' : 'Watch & Track';
 
-  const handleSaveToggle = (value: boolean) => {
-    setSaveResults(value);
-    if (value) {
-      saveSession();
-    }
-  };
-
   const saveSession = () => {
     const session: Session = {
       id: Date.now().toString(),
@@ -78,8 +75,30 @@ export default function ResultsScreen() {
     addSession(session);
   };
 
-  const handleShareWithClinician = () => {
-    Alert.alert('Coming Soon', 'Sharing with your clinician will be available in a future update.');
+  const buildCurrentSession = (): Session => ({
+    id: `current-${Date.now()}`,
+    userId: profile?.id ?? 'anonymous',
+    date: new Date().toISOString(),
+    neuroScore: scores.neuroScore,
+    scoreLabel,
+    vocalStabilityScore: scores.vocalStability,
+    speechRhythmScore: scores.speechRhythm,
+    motorCoordinationScore: scores.motorCoordination,
+    baselineDrift: scores.baselineDrift,
+    tasksCompleted: ['vocal', 'speech', 'motor'],
+    isBaseline: false,
+  });
+
+  const handleShareWithClinician = async () => {
+    try {
+      await shareHistory({
+        sessions,
+        profile,
+        currentSession: buildCurrentSession(),
+      });
+    } catch (err) {
+      Alert.alert('Share failed', err instanceof Error ? err.message : String(err));
+    }
   };
 
   const handleStartNewScreening = () => {
@@ -100,7 +119,7 @@ export default function ResultsScreen() {
     >
       {/* Header */}
       <Animated.View entering={FadeInDown.duration(600).delay(100)}>
-        <Text style={styles.header}>Your Results</Text>
+        <Text style={styles.header}>{t('results.title')}</Text>
       </Animated.View>
 
       {/* NeuroScore Ring */}
@@ -117,9 +136,9 @@ export default function ResultsScreen() {
 
       {/* Celebration text */}
       <Animated.View entering={FadeInDown.duration(600).delay(400)}>
-        <Text style={styles.celebrationText}>Looking good!</Text>
+        <Text style={styles.celebrationText}>{t('results.celebrate.title')}</Text>
         <Text style={styles.celebrationSubtext}>
-          Your signals are within a healthy range
+          {t('results.celebrate.subtitle')}
         </Text>
       </Animated.View>
 
@@ -130,27 +149,29 @@ export default function ResultsScreen() {
       >
         <MetricCard
           icon="🎵"
-          title="Vocal Stability Index"
+          title={t('results.metric.vocal')}
           score={scores.vocalStability}
           color="#2196F3"
         />
         <MetricCard
           icon="🗣️"
-          title="Speech Rhythm Score"
+          title={t('results.metric.speech')}
           score={scores.speechRhythm}
           color="#38B6FF"
         />
         <MetricCard
           icon="👆"
-          title="Motor Coordination Score"
+          title={t('results.metric.motor')}
           score={scores.motorCoordination}
           color="#5CE1E6"
         />
         <View style={styles.driftCard}>
           <View style={styles.driftHeader}>
             <Text style={styles.driftIcon}>{"📈"}</Text>
-            <Text style={styles.driftTitle}>Baseline Drift</Text>
-            <Text style={styles.driftValue}>+{scores.baselineDrift} from last</Text>
+            <Text style={styles.driftTitle}>{t('results.metric.drift')}</Text>
+            <Text style={styles.driftValue}>
+              {t('results.drift.fromLast', { n: scores.baselineDrift })}
+            </Text>
           </View>
           <View style={styles.driftBar}>
             <View style={[styles.driftBarFill, { width: `${Math.min(scores.baselineDrift * 10, 100)}%` }]} />
@@ -167,7 +188,7 @@ export default function ResultsScreen() {
           onPress={() => setShowExplanation(!showExplanation)}
           style={styles.explanationToggle}
         >
-          <Text style={styles.explanationTitle}>What does this mean?</Text>
+          <Text style={styles.explanationTitle}>{t('results.explanation.toggle')}</Text>
           <Ionicons
             name={showExplanation ? 'chevron-up' : 'chevron-down'}
             size={20}
@@ -175,11 +196,7 @@ export default function ResultsScreen() {
           />
         </Pressable>
         {showExplanation && (
-          <Text style={styles.explanationText}>
-            Your NeuroScore reflects the consistency of your vocal, speech, and motor
-            signals compared to your personal baseline. A score in the &apos;Stable&apos; range
-            means your signals are consistent with your previous recordings.
-          </Text>
+          <Text style={styles.explanationText}>{t('results.explanation.body')}</Text>
         )}
       </Animated.View>
 
@@ -188,10 +205,10 @@ export default function ResultsScreen() {
         entering={FadeInUp.duration(600).delay(900)}
         style={styles.saveRow}
       >
-        <Text style={styles.saveLabel}>Save Results</Text>
+        <Text style={styles.saveLabel}>{t('results.save')}</Text>
         <Switch
           value={saveResults}
-          onValueChange={handleSaveToggle}
+          onValueChange={setSaveResults}
           trackColor={{ false: Colors.border, true: Colors.primary }}
           thumbColor={saveResults ? Colors.accent : '#ccc'}
         />
@@ -207,7 +224,7 @@ export default function ResultsScreen() {
           style={styles.outlineButton}
         >
           <Ionicons name="share-outline" size={18} color={Colors.secondary} />
-          <Text style={styles.outlineButtonText}>Share with Clinician</Text>
+          <Text style={styles.outlineButtonText}>{t('results.share')}</Text>
         </Pressable>
 
         <Pressable
@@ -215,7 +232,7 @@ export default function ResultsScreen() {
           style={styles.filledButton}
         >
           <Ionicons name="refresh" size={18} color={Colors.textPrimary} />
-          <Text style={styles.filledButtonText}>Start New Screening</Text>
+          <Text style={styles.filledButtonText}>{t('results.startNew')}</Text>
         </Pressable>
       </Animated.View>
     </ScrollView>

@@ -1,9 +1,11 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useT } from "@/hooks/useT";
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
+  const t = useT();
 
   return (
     <Tabs
@@ -23,7 +25,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
+          title: t('tabs.home'),
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
@@ -36,7 +38,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="screening"
         options={{
-          title: "Screen",
+          title: t('tabs.screen'),
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "pulse" : "pulse-outline"}
@@ -49,7 +51,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: "History",
+          title: t('tabs.history'),
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "time" : "time-outline"}
@@ -62,7 +64,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="learn"
         options={{
-          title: "Learn",
+          title: t('tabs.learn'),
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "book" : "book-outline"}
@@ -75,7 +77,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
+          title: t('tabs.settings'),
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "settings" : "settings-outline"}
