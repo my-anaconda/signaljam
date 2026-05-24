@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import { useAppStore } from '@/store/useAppStore';
@@ -69,6 +70,18 @@ export default function ProfileScreen() {
       contentInsetAdjustmentBehavior="automatic"
       keyboardShouldPersistTaps="handled"
     >
+      {/* Back Button */}
+      <Pressable
+        onPress={() => router.back()}
+        style={styles.backButton}
+        accessibilityRole="button"
+        accessibilityLabel="Go back"
+        hitSlop={12}
+      >
+        <Ionicons name="chevron-back" size={22} color={Colors.textPrimary} />
+        <Text style={styles.backButtonText}>Back</Text>
+      </Pressable>
+
       <Text style={styles.title}>Set Up Your Profile</Text>
 
       {/* Age Range */}
@@ -192,6 +205,20 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 24,
     gap: 24,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    minHeight: 44,
+    marginBottom: 4,
+    marginLeft: -4,
+    gap: 2,
+  },
+  backButtonText: {
+    fontFamily: Fonts.medium,
+    fontSize: 16,
+    color: Colors.textPrimary,
   },
   title: {
     fontFamily: Fonts.bold,
