@@ -297,11 +297,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    boxShadow: '0px 4px 8px rgba(30, 111, 217, 0.3)',
   },
   recordButtonActive: {
     backgroundColor: Colors.error,

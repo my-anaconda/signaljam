@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
@@ -65,17 +65,6 @@ export default function ScreeningScreen() {
         ))}
       </View>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.skipButton,
-          pressed && styles.skipButtonPressed,
-        ]}
-        onPress={() => router.push('/processing')}
-        accessibilityRole="button"
-        accessibilityLabel="Skip all tasks"
-      >
-        <Text style={styles.skipButtonText}>Skip All</Text>
-      </Pressable>
     </ScrollView>
   );
 }
@@ -105,19 +94,5 @@ const styles = StyleSheet.create({
   },
   taskList: {
     gap: 14,
-  },
-  skipButton: {
-    alignSelf: 'center',
-    marginTop: 28,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-  },
-  skipButtonPressed: {
-    opacity: 0.6,
-  },
-  skipButtonText: {
-    fontFamily: Fonts.medium,
-    fontSize: 15,
-    color: Colors.textSecondary,
   },
 });

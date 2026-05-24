@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": 1779640692955,
+  "generatedAt": 1779641176749,
   "entries": {
     "GlassCard@components/glass-card.tsx:10": {
       "element": {
@@ -496,105 +496,6 @@
         }
       ]
     },
-    "NeuroScoreRing@components/neuro-score-ring.tsx:57": {
-      "element": {
-        "file": "components/neuro-score-ring.tsx",
-        "line": 57
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "components/neuro-score-ring.tsx",
-          "defLine": 111,
-          "properties": {
-            "alignItems": {
-              "line": 112,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 113,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "NeuroScoreRing@components/neuro-score-ring.tsx:88": {
-      "element": {
-        "file": "components/neuro-score-ring.tsx",
-        "line": 88
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.labelContainer",
-          "file": "components/neuro-score-ring.tsx",
-          "defLine": 115,
-          "properties": {
-            "position": {
-              "line": 116,
-              "col": 14,
-              "endCol": 24,
-              "raw": "'absolute'"
-            },
-            "alignItems": {
-              "line": 117,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 118,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "NeuroScoreRing@components/neuro-score-ring.tsx:89": {
-      "element": {
-        "file": "components/neuro-score-ring.tsx",
-        "line": 89
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreText",
-          "file": "components/neuro-score-ring.tsx",
-          "defLine": 120,
-          "properties": {}
-        }
-      ]
-    },
-    "NeuroScoreRing@components/neuro-score-ring.tsx:97": {
-      "element": {
-        "file": "components/neuro-score-ring.tsx",
-        "line": 97
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.labelText",
-          "file": "components/neuro-score-ring.tsx",
-          "defLine": 123,
-          "properties": {
-            "marginTop": {
-              "line": 125,
-              "col": 15,
-              "endCol": 16,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
     "WaveformBar@components/waveform-visualizer.tsx:67": {
       "element": {
         "file": "components/waveform-visualizer.tsx",
@@ -674,220 +575,6 @@
               "col": 12,
               "endCol": 14,
               "raw": "48"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:17": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 17
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.card",
-          "file": "components/metric-card.tsx",
-          "defLine": 41,
-          "properties": {
-            "borderWidth": {
-              "line": 43,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderRadius": {
-              "line": 45,
-              "col": 18,
-              "endCol": 20,
-              "raw": "16"
-            },
-            "borderCurve": {
-              "line": 46,
-              "col": 17,
-              "endCol": 29,
-              "raw": "'continuous'"
-            },
-            "padding": {
-              "line": 47,
-              "col": 13,
-              "endCol": 15,
-              "raw": "16"
-            },
-            "gap": {
-              "line": 48,
-              "col": 9,
-              "endCol": 11,
-              "raw": "12"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:22": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 22
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.header",
-          "file": "components/metric-card.tsx",
-          "defLine": 50,
-          "properties": {
-            "flexDirection": {
-              "line": 51,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 52,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "gap": {
-              "line": 53,
-              "col": 9,
-              "endCol": 10,
-              "raw": "8"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:23": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 23
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.icon",
-          "file": "components/metric-card.tsx",
-          "defLine": 55,
-          "properties": {
-            "fontSize": {
-              "line": 56,
-              "col": 14,
-              "endCol": 16,
-              "raw": "18"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:24": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 24
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.title",
-          "file": "components/metric-card.tsx",
-          "defLine": 58,
-          "properties": {
-            "fontSize": {
-              "line": 60,
-              "col": 14,
-              "endCol": 16,
-              "raw": "14"
-            },
-            "flex": {
-              "line": 62,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:25": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 25
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreValue",
-          "file": "components/metric-card.tsx",
-          "defLine": 64,
-          "properties": {
-            "fontSize": {
-              "line": 66,
-              "col": 14,
-              "endCol": 16,
-              "raw": "16"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:28": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 28
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.progressBarBackground",
-          "file": "components/metric-card.tsx",
-          "defLine": 68,
-          "properties": {
-            "height": {
-              "line": 69,
-              "col": 12,
-              "endCol": 13,
-              "raw": "6"
-            },
-            "borderRadius": {
-              "line": 70,
-              "col": 18,
-              "endCol": 19,
-              "raw": "3"
-            },
-            "overflow": {
-              "line": 72,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            }
-          }
-        }
-      ]
-    },
-    "MetricCard@components/metric-card.tsx:29": {
-      "element": {
-        "file": "components/metric-card.tsx",
-        "line": 29
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.progressBarFill",
-          "file": "components/metric-card.tsx",
-          "defLine": 74,
-          "properties": {
-            "height": {
-              "line": 75,
-              "col": 12,
-              "endCol": 18,
-              "raw": "'100%'"
-            },
-            "borderRadius": {
-              "line": 76,
-              "col": 18,
-              "endCol": 19,
-              "raw": "3"
             }
           }
         }
@@ -1796,6 +1483,1073 @@
               "col": 14,
               "endCol": 16,
               "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "ScreeningScreen@app/(tabs)/screening.tsx:41": {
+      "element": {
+        "file": "app/(tabs)/screening.tsx",
+        "line": 41
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/(tabs)/screening.tsx",
+          "defLine": 73,
+          "properties": {
+            "flex": {
+              "line": 74,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ScreeningScreen@app/(tabs)/screening.tsx:49": {
+      "element": {
+        "file": "app/(tabs)/screening.tsx",
+        "line": 49
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "app/(tabs)/screening.tsx",
+          "defLine": 81,
+          "properties": {
+            "marginBottom": {
+              "line": 82,
+              "col": 18,
+              "endCol": 20,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "ScreeningScreen@app/(tabs)/screening.tsx:50": {
+      "element": {
+        "file": "app/(tabs)/screening.tsx",
+        "line": 50
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.title",
+          "file": "app/(tabs)/screening.tsx",
+          "defLine": 84,
+          "properties": {
+            "fontSize": {
+              "line": 86,
+              "col": 14,
+              "endCol": 16,
+              "raw": "28"
+            },
+            "marginBottom": {
+              "line": 88,
+              "col": 18,
+              "endCol": 19,
+              "raw": "6"
+            }
+          }
+        }
+      ]
+    },
+    "ScreeningScreen@app/(tabs)/screening.tsx:51": {
+      "element": {
+        "file": "app/(tabs)/screening.tsx",
+        "line": 51
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.subtitle",
+          "file": "app/(tabs)/screening.tsx",
+          "defLine": 90,
+          "properties": {
+            "fontSize": {
+              "line": 92,
+              "col": 14,
+              "endCol": 16,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "ScreeningScreen@app/(tabs)/screening.tsx:54": {
+      "element": {
+        "file": "app/(tabs)/screening.tsx",
+        "line": 54
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.taskList",
+          "file": "app/(tabs)/screening.tsx",
+          "defLine": 95,
+          "properties": {
+            "gap": {
+              "line": 96,
+              "col": 9,
+              "endCol": 11,
+              "raw": "14"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:99": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 99
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/recording/[task].tsx",
+          "defLine": 204,
+          "properties": {
+            "flex": {
+              "line": 205,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "paddingHorizontal": {
+              "line": 207,
+              "col": 23,
+              "endCol": 25,
+              "raw": "20"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:101": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 101
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "app/recording/[task].tsx",
+          "defLine": 209,
+          "properties": {
+            "flexDirection": {
+              "line": 210,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 211,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 212,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "marginBottom": {
+              "line": 213,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:102": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 102
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.backButton",
+          "file": "app/recording/[task].tsx",
+          "defLine": 215,
+          "properties": {
+            "width": {
+              "line": 216,
+              "col": 11,
+              "endCol": 13,
+              "raw": "44"
+            },
+            "height": {
+              "line": 217,
+              "col": 12,
+              "endCol": 14,
+              "raw": "44"
+            },
+            "alignItems": {
+              "line": 218,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 219,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:111": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 111
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.headerTitle",
+          "file": "app/recording/[task].tsx",
+          "defLine": 221,
+          "properties": {
+            "fontSize": {
+              "line": 223,
+              "col": 14,
+              "endCol": 16,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:112": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 112
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.backButton",
+          "file": "app/recording/[task].tsx",
+          "defLine": 215,
+          "properties": {
+            "width": {
+              "line": 216,
+              "col": 11,
+              "endCol": 13,
+              "raw": "44"
+            },
+            "height": {
+              "line": 217,
+              "col": 12,
+              "endCol": 14,
+              "raw": "44"
+            },
+            "alignItems": {
+              "line": 218,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 219,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:116": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 116
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.instruction",
+          "file": "app/recording/[task].tsx",
+          "defLine": 226,
+          "properties": {
+            "fontSize": {
+              "line": 228,
+              "col": 14,
+              "endCol": 16,
+              "raw": "15"
+            },
+            "textAlign": {
+              "line": 230,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            },
+            "lineHeight": {
+              "line": 231,
+              "col": 16,
+              "endCol": 18,
+              "raw": "22"
+            },
+            "marginBottom": {
+              "line": 232,
+              "col": 18,
+              "endCol": 20,
+              "raw": "24"
+            },
+            "paddingHorizontal": {
+              "line": 233,
+              "col": 23,
+              "endCol": 25,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:119": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 119
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.timerContainer",
+          "file": "app/recording/[task].tsx",
+          "defLine": 235,
+          "properties": {
+            "alignItems": {
+              "line": 236,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "marginBottom": {
+              "line": 237,
+              "col": 18,
+              "endCol": 20,
+              "raw": "32"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:120": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 120
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.timerText",
+          "file": "app/recording/[task].tsx",
+          "defLine": 239,
+          "properties": {
+            "fontSize": {
+              "line": 241,
+              "col": 14,
+              "endCol": 16,
+              "raw": "48"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:121": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 121
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.timerLabel",
+          "file": "app/recording/[task].tsx",
+          "defLine": 244,
+          "properties": {
+            "fontSize": {
+              "line": 246,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "marginTop": {
+              "line": 248,
+              "col": 15,
+              "endCol": 16,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:127": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 127
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.visualizerContainer",
+          "file": "app/recording/[task].tsx",
+          "defLine": 250,
+          "properties": {
+            "flex": {
+              "line": 251,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "alignItems": {
+              "line": 252,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 253,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "minHeight": {
+              "line": 254,
+              "col": 15,
+              "endCol": 18,
+              "raw": "120"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:129": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 129
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:140": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 140
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.tapEmoji",
+          "file": "app/recording/[task].tsx",
+          "defLine": 275,
+          "properties": {
+            "fontSize": {
+              "line": 276,
+              "col": 14,
+              "endCol": 16,
+              "raw": "40"
+            },
+            "marginBottom": {
+              "line": 277,
+              "col": 18,
+              "endCol": 19,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:141": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 141
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.tapCountText",
+          "file": "app/recording/[task].tsx",
+          "defLine": 279,
+          "properties": {
+            "fontSize": {
+              "line": 281,
+              "col": 14,
+              "endCol": 16,
+              "raw": "36"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:142": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 142
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.tapLabel",
+          "file": "app/recording/[task].tsx",
+          "defLine": 284,
+          "properties": {
+            "fontSize": {
+              "line": 286,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:154": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 154
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.recordButtonContainer",
+          "file": "app/recording/[task].tsx",
+          "defLine": 289,
+          "properties": {
+            "alignItems": {
+              "line": 290,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "marginVertical": {
+              "line": 291,
+              "col": 20,
+              "endCol": 22,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:155": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 155
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:166": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 166
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.stopIcon",
+          "file": "app/recording/[task].tsx",
+          "defLine": 309,
+          "properties": {
+            "width": {
+              "line": 310,
+              "col": 11,
+              "endCol": 13,
+              "raw": "24"
+            },
+            "height": {
+              "line": 311,
+              "col": 12,
+              "endCol": 14,
+              "raw": "24"
+            },
+            "borderRadius": {
+              "line": 312,
+              "col": 18,
+              "endCol": 19,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:171": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 171
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.recordHint",
+          "file": "app/recording/[task].tsx",
+          "defLine": 315,
+          "properties": {
+            "fontSize": {
+              "line": 317,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            },
+            "marginTop": {
+              "line": 319,
+              "col": 15,
+              "endCol": 17,
+              "raw": "10"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:177": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 177
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.privacyNote",
+          "file": "app/recording/[task].tsx",
+          "defLine": 321,
+          "properties": {
+            "fontSize": {
+              "line": 323,
+              "col": 14,
+              "endCol": 16,
+              "raw": "12"
+            },
+            "textAlign": {
+              "line": 325,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            },
+            "paddingHorizontal": {
+              "line": 326,
+              "col": 23,
+              "endCol": 25,
+              "raw": "20"
+            },
+            "marginBottom": {
+              "line": 327,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:183": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 183
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.actionButtons",
+          "file": "app/recording/[task].tsx",
+          "defLine": 329,
+          "properties": {
+            "flexDirection": {
+              "line": 330,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "gap": {
+              "line": 331,
+              "col": 9,
+              "endCol": 11,
+              "raw": "12"
+            },
+            "marginBottom": {
+              "line": 332,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:184": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 184
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.buttonWrapper",
+          "file": "app/recording/[task].tsx",
+          "defLine": 334,
+          "properties": {
+            "flex": {
+              "line": 335,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "RecordingScreen@app/recording/[task].tsx:191": {
+      "element": {
+        "file": "app/recording/[task].tsx",
+        "line": 191
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.buttonWrapper",
+          "file": "app/recording/[task].tsx",
+          "defLine": 334,
+          "properties": {
+            "flex": {
+              "line": 335,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:17": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 17
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.card",
+          "file": "components/metric-card.tsx",
+          "defLine": 40,
+          "properties": {
+            "borderWidth": {
+              "line": 42,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderRadius": {
+              "line": 44,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            },
+            "borderCurve": {
+              "line": 45,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            },
+            "padding": {
+              "line": 46,
+              "col": 13,
+              "endCol": 15,
+              "raw": "16"
+            },
+            "gap": {
+              "line": 47,
+              "col": 9,
+              "endCol": 11,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:21": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 21
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "components/metric-card.tsx",
+          "defLine": 49,
+          "properties": {
+            "flexDirection": {
+              "line": 50,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 51,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 52,
+              "col": 9,
+              "endCol": 10,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:22": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 22
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.icon",
+          "file": "components/metric-card.tsx",
+          "defLine": 54,
+          "properties": {
+            "fontSize": {
+              "line": 55,
+              "col": 14,
+              "endCol": 16,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:23": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 23
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.title",
+          "file": "components/metric-card.tsx",
+          "defLine": 57,
+          "properties": {
+            "fontSize": {
+              "line": 59,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "flex": {
+              "line": 61,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:24": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 24
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreValue",
+          "file": "components/metric-card.tsx",
+          "defLine": 63,
+          "properties": {
+            "fontSize": {
+              "line": 65,
+              "col": 14,
+              "endCol": 16,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:27": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 27
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.progressBarBackground",
+          "file": "components/metric-card.tsx",
+          "defLine": 67,
+          "properties": {
+            "height": {
+              "line": 68,
+              "col": 12,
+              "endCol": 13,
+              "raw": "6"
+            },
+            "borderRadius": {
+              "line": 69,
+              "col": 18,
+              "endCol": 19,
+              "raw": "3"
+            },
+            "overflow": {
+              "line": 71,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            }
+          }
+        }
+      ]
+    },
+    "MetricCard@components/metric-card.tsx:28": {
+      "element": {
+        "file": "components/metric-card.tsx",
+        "line": 28
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.progressBarFill",
+          "file": "components/metric-card.tsx",
+          "defLine": 73,
+          "properties": {
+            "height": {
+              "line": 74,
+              "col": 12,
+              "endCol": 18,
+              "raw": "'100%'"
+            },
+            "borderRadius": {
+              "line": 75,
+              "col": 18,
+              "endCol": 19,
+              "raw": "3"
+            }
+          }
+        }
+      ]
+    },
+    "NeuroScoreRing@components/neuro-score-ring.tsx:61": {
+      "element": {
+        "file": "components/neuro-score-ring.tsx",
+        "line": 61
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/neuro-score-ring.tsx",
+          "defLine": 114,
+          "properties": {
+            "alignItems": {
+              "line": 115,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 116,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "NeuroScoreRing@components/neuro-score-ring.tsx:91": {
+      "element": {
+        "file": "components/neuro-score-ring.tsx",
+        "line": 91
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.labelContainer",
+          "file": "components/neuro-score-ring.tsx",
+          "defLine": 118,
+          "properties": {
+            "position": {
+              "line": 119,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "alignItems": {
+              "line": 120,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 121,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "NeuroScoreRing@components/neuro-score-ring.tsx:92": {
+      "element": {
+        "file": "components/neuro-score-ring.tsx",
+        "line": 92
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreText",
+          "file": "components/neuro-score-ring.tsx",
+          "defLine": 123,
+          "properties": {}
+        }
+      ]
+    },
+    "NeuroScoreRing@components/neuro-score-ring.tsx:100": {
+      "element": {
+        "file": "components/neuro-score-ring.tsx",
+        "line": 100
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.labelText",
+          "file": "components/neuro-score-ring.tsx",
+          "defLine": 126,
+          "properties": {
+            "marginTop": {
+              "line": 128,
+              "col": 15,
+              "endCol": 16,
+              "raw": "2"
             }
           }
         }

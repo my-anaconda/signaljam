@@ -16,7 +16,6 @@ export function MetricCard({ icon, title, score, color }: MetricCardProps) {
   return (
     <View
       style={styles.card}
-      accessibilityRole="summary"
       accessibilityLabel={`${title}: ${clampedScore} out of 100`}
     >
       <View style={styles.header}>

@@ -1,12 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedProps,
-  Easing,
-} from 'react-native-reanimated';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 
@@ -17,8 +11,6 @@ interface NeuroScoreRingProps {
   size: number;
   scoreLabel: ScoreLabel;
 }
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 const getLabelColor = (label: ScoreLabel): string => {
   switch (label) {
@@ -37,27 +29,38 @@ export function NeuroScoreRing({ score, size, scoreLabel }: NeuroScoreRingProps)
   const circumference = 2 * Math.PI * radius;
   const center = size / 2;
 
-  const progress = useSharedValue(0);
+  // Animate via state to avoid useAnimatedProps SVG warnings on web
+  const [animatedProgress, setAnimatedProgress] = useState(0);
 
   useEffect(() => {
-    progress.value = withTiming(score / 100, {
-      duration: 1200,
-      easing: Easing.out(Easing.cubic),
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    let frame: number;
+    const startTime = Date.now();
+    const duration = 1200;
+    const target = score / 100;
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // Cubic ease-out
+      const eased = 1 - Math.pow(1 - t, 3);
+      setAnimatedProgress(eased * target);
+
+      if (t < 1) {
+        frame = requestAnimationFrame(animate);
+      }
+    };
+
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
   }, [score]);
 
-  const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: circumference * (1 - progress.value),
-  }));
-
+  const strokeDashoffset = circumference * (1 - animatedProgress);
   const ringColor = getLabelColor(scoreLabel);
 
   return (
     <View
       style={[styles.container, { width: size, height: size }]}
-      accessibilityRole="progressbar"
-      accessibilityValue={{ min: 0, max: 100, now: score }}
+      accessibilityRole="none"
       accessibilityLabel={`Neuro score ${score} out of 100, status ${scoreLabel}`}
     >
       <Svg width={size} height={size}>
@@ -70,18 +73,18 @@ export function NeuroScoreRing({ score, size, scoreLabel }: NeuroScoreRingProps)
           strokeWidth={strokeWidth}
           fill="none"
         />
-        {/* Animated progress ring */}
-        <AnimatedCircle
+        {/* Progress ring */}
+        <Circle
           cx={center}
           cy={center}
           r={radius}
           stroke={ringColor}
           strokeWidth={strokeWidth}
           fill="none"
-          strokeDasharray={circumference}
-          animatedProps={animatedProps}
+          strokeDasharray={`${circumference}`}
+          strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          rotation="-90"
+          rotation={-90}
           origin={`${center}, ${center}`}
         />
       </Svg>
